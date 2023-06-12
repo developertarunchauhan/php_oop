@@ -18,11 +18,11 @@
 
 <body>
     <!-- Main Navigation Begin -->
-    <?php include('partials/navbar.php'); ?>
+    <?php include_once('partials/navbar.php'); ?>
     <!-- Main Navigation Ends -->
     <!-- Main Container Begin-->
     <div class="container-fluid">
-        <div class="container border rounded shadow my-5 p-3">
+        <div class="container border rounded border my-5 p-3">
             <?php
             /**
              * 
@@ -57,7 +57,9 @@
             {
                 // declaring properties
 
-                public $a, $b, $c;
+                public $a;
+                public $b;
+                public $c;
 
                 /**
                  * Access modifier : controls how properties & methods can be accesed
@@ -97,11 +99,11 @@
             echo $objCalc->sub();
 
             /**
-             * Constructor : Initialize propertis of object when object is created from the class 
+             * Constructor : Initialize properties of object when object is created from the class 
              */
 
             // declaring class with constructor
-            class classConstructor
+            class ClassConstructor
             {
                 // definig properties with default values
 
@@ -110,7 +112,7 @@
                 public $job = 'N/A';
 
                 // declaring a constructor 
-                function __construct($name = "NONAME", $age = 0, $job = "N/A") // setting default values for variables
+                public function __construct($name = "NONAME", $age = 0, $job = "N/A") // setting default values for variables
                 {
                     $this->name = $name;
                     $this->age = $age;
@@ -124,7 +126,7 @@
             }
 
             // creating object
-            $objConstructor = new classConstructor("Tarun Chauhan", 30, "Software Developer");
+            $objConstructor = new ClassConstructor("Tarun Chauhan", 30, "Software Developer");
 
             // calling property
             $objConstructor->info();
@@ -138,7 +140,7 @@
             // Basic inheritance
             // drived class form classConstructr
 
-            class classDrivedOne extends classConstructor
+            class ClassDrivedOne extends ClassConstructor
             {
                 public $salary = 50000;
 
@@ -154,6 +156,121 @@
             $objDrivedOne->info();
 
             // inheritance with access modifier
+
+            // Overridding
+
+            class ClassOne
+            {
+                public $name = ''; // public property can be accessed outside of class
+                protected $location = ''; // can't be override from outside
+                private $state = ''; // can only be accessed inside this class
+
+                public function __construct($msg = 'Hello')
+                {
+                    /**
+                     * User may or may not send the msg
+                     */
+                    $this->name = $msg;
+                    $this->location = "Shimla"; // value is assigned
+                    $this->state = "Himachal Pradesh";
+                }
+
+                public function sayHello()
+                {
+                    echo $this->name . "<br>";
+                    echo "Location :" . $this->location . "<br>";
+                    echo "State : " . $this->state . "<br>";
+                }
+            }
+            // passign the value
+            $objClassOne = new ClassOne("Original Message Passed while creating Object");
+            $objClassOne->sayHello();
+            //$objClassOne->state; // cannot access private property
+
+            $objClassOne->name = "Overriding the original message";
+
+            //$objClassOne->location = "Chandigarh"; // showing error because the property is private ans can only be accessed inside a the class.
+
+            echo $objClassOne->name . "<br>";
+
+            class ClassTwo extends ClassOne
+            {
+                public function getLocation()
+                {
+                    $this->location = 'Chandigarh'; // accessing a proteted property from parent class
+                    echo $this->location . "<br>";
+                }
+            }
+
+            $objClassTwo = new ClassTwo();
+
+
+            $objClassTwo->getLocation();
+
+            /**
+             * Overriding Methods & Properties
+             */
+
+            class ClassThree
+            {
+                public $msg = "Message from Base Class";
+                public function showMsg()
+                {
+                    echo $this->msg . "<br>";
+                }
+            }
+            class ClassFour extends ClassThree
+            {
+                public $msg = "Message from Derived Class"; // over ridding original messages from base class
+
+                public function showMsg()
+                {
+                    echo "METHOD OVERRIDING";
+                }
+            }
+
+            $objClassThree = new ClassThree();
+            echo "Base Class :" . $objClassThree->msg . "<br>";
+
+            $objClassFour = new ClassFour();
+            //$objClassFour->showMsg();
+            $objClassFour->showMsg();
+
+            /**
+             * ABSTRACT CLASS : A class whose object can't be created.Properties & methods of a Abstract class can only be accessed inside a derived class.
+             * 1. Atleast one abstract method is required.
+             * 2. 
+             */
+
+            abstract class ClassFive
+            {
+                protected $name = '';
+
+                public function __construct($n = 'Enter Name')
+                {
+                    $this->name = $n;
+                }
+                /**
+                 * Abstract function is declared but not implemented/statement is not defined
+                 * We need to create a derived class in order to add functionality to the function.
+                 */
+                abstract protected function show();
+            }
+            /**
+             * Deriving class from parent class
+             */
+
+            class ClassSix extends ClassFive
+            {
+                public function show()
+                {
+                    echo "<br>" . $this->name . "<br>";
+                }
+            }
+
+            $objClassSix = new ClassSix();
+            $objClassSix->show();
+
             ?>
         </div>
 
