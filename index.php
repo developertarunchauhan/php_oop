@@ -1,3 +1,10 @@
+<?php
+require_once('Helper\Encrypt.php');
+require_once('Helper\EncryptPassword.php');
+
+use Helper\Hash as Hash;
+use Helper\Password\Hash as HashPassword;
+?>
 <!doctype html>
 <html lang="en">
 
@@ -53,7 +60,7 @@
 
             // declaring class
 
-            class classCalc
+            class ClassCalc
             {
                 // declaring properties
 
@@ -89,7 +96,7 @@
 
 
             // creating/driving object from a class
-            $objCalc = new classCalc();
+            $objCalc = new ClassCalc();
 
             $objCalc->a = 10;
             $objCalc->b = 20;
@@ -262,6 +269,9 @@
 
             class ClassSix extends ClassFive
             {
+                /**
+                 * Implementing abstract method from abstract parent class
+                 */
                 public function show()
                 {
                     echo "<br>" . $this->name . "<br>";
@@ -271,7 +281,284 @@
             $objClassSix = new ClassSix();
             $objClassSix->show();
 
+            /**
+             * Interfaces : Driving child class from multiple parent class
+             * Properties can't be created.
+             * Methods can be declared but its statement will be declared in derived class
+             * No object can be declared directly.
+             */
+
+
+            interface ClassSeven
+            {
+                function interSevenOne($msg);
+            }
+
+            interface ClassEight
+            {
+                function interEightOne($msg);
+                function interEightTwo($msg);
+            }
+
+            class ClassNine implements ClassSeven, ClassEight
+            {
+                public function interSevenOne($msg)
+                {
+                    echo "Hello ," . $msg . "<br>";
+                }
+                public function interEightOne($msg)
+                {
+                    echo "Hello, " . $msg . "<br>";
+                }
+                public function interEightTwo($msg)
+                {
+                    echo "Hello," . $msg . "<br>";
+                }
+            }
+            /**
+             * Static Members : called directly without creating object of class
+             * instead of '$this->' use 'self::' for calling static function or static property within same class
+             * if all functions and property are static inside a class, the class automatically becomes statuc
+             */
+
+            class ClassTen
+            {
+                public static $success = "Data Saved Successfully<br>";
+
+                public static function show()
+                {
+                    echo self::$success; // using a static property from same class
+                }
+            }
+
+            class ClassEleven extends ClassTen // extending a static class or class with static members
+            {
+                public function success()
+                {
+                    echo parent::$success; // usong a static property from parent class
+                }
+            }
+
+            echo ClassTen::$success; // calling a static property from a class
+            ClassTen::show(); // calling a static function a class
+
+            $objClassEleven = new ClassEleven();
+
+            $objClassEleven->success();
+
+            /**
+             * Late Static Binding :  
+             */
+
+            class ClassTwelve
+            {
+                protected static $msg = "Data Stored <br>";
+                public function show()
+                {
+                    echo self::$msg; // self -> displays $msg from the parent class from which it is called
+                    echo static::$msg; // static -> disaplys $msg from the derived class from whose object this function is called
+                }
+            }
+            class ClassThirteen extends ClassTwelve
+            {
+                protected static $msg = "New Message<br>"; // overridding the static property from base class 
+            }
+
+            $objClassThirteen = new ClassThirteen();
+            $objClassThirteen->show();
+
+            /**
+             * Traits : traits are used to declare methods which can be used accross multiple classes. It solves the probelem of limitation of single inheritance in php
+             */
+
+            trait TraitOne
+            {
+                public function uploadImage()
+                {
+                    echo "Image Upload<br>";
+                }
+                public function successMsg() // same function name in 1 and 2
+                {
+                    echo "File upload Success<br>";
+                }
+            }
+
+            trait TraitTwo
+            {
+                public function uploadPdf()
+                {
+                    echo "PDF Upload<br>";
+                }
+                private function uploadXls() // private function
+                {
+                    echo "XLS Upload<br>";
+                }
+                public function successMsg() // same function name in 1 and 2 trait
+                {
+                    echo "UPLOAD SUCCESSFULL<br>";
+                }
+            }
+
+            class ClassFourteen
+            {
+                use TraitOne;
+
+                public function upload()
+                {
+                    $this->uploadImage();
+                }
+            }
+
+            class ClassFifteen
+            {
+                use TraitOne, TraitTwo {
+                    TraitOne::successMsg insteadof TraitTwo; // resolving same function name for the trait
+                    TraitTwo::uploadXls as public newUploadXls; // usiing a private trait function as public and giving new name(Optional)
+                }
+                public function file()
+                {
+                    $this->uploadImage();
+                }
+            }
+
+            $objClassFourteen = new ClassFourteen();
+            $objClassFourteen->upload();
+
+            $objClassFifteen = new ClassFifteen();
+            $objClassFifteen->file();
+            $objClassFifteen->uploadPdf();
+            $objClassFifteen->newUploadXls();
+
+
+            /**
+             * Method Overriding in Traits : 
+             */
+            class ClassSixteen
+            {
+                public function uploadXls() // this will has heighest priority
+                {
+                    echo "File Upload from Sixteen<br>";
+                }
+            }
+            $objClassSixteen = new ClassSixteen();
+            $objClassSixteen->uploadXls();
+
+            /**
+             * Trait conflicts
+             */
+
+            class ClassSeventeen
+            {
+                use TraitOne, TraitTwo {
+                    TraitTwo::successMsg insteadof TraitOne;
+                    TraitOne::successMsg as success_msg;
+                }
+            }
+
+            $objClassSeventeen = new ClassSeventeen();
+
+            $objClassSeventeen->successMsg();
+            $objClassSeventeen->success_msg();
+
+            /**
+             * Type Hinting : A concept the provides hints to function for the expected data type of argument
+             */
+
+            function increment($amount) // data input type will not be checked and function will start execting 
+            {
+                echo $amount + (10 / 100 * $amount) . "<br>";
+            }
+            function incrementOne(int $amount) // checks for input data type and doens't run function if data type is not matched
+            {
+                echo "New Salary :" . $amount + (10 / 100 * $amount) . "<br>";
+            }
+
+
+            increment(25000); // int value
+            increment(25000.00); // float value
+            //increment("ABC"); // string value
+
+            incrementOne(25000); // int value
+            incrementOne(25000.00); // float value
+            //incrementOne("ABC"); // string value
+
+            /**
+             * Type Hinting example + passing an object to function / object data type
+             */
+
+            class ClassEighteen
+            {
+                public function hello()
+                {
+                    echo "Hello";
+                }
+            }
+
+            class ClassNineteen
+            {
+                public function bye()
+                {
+                    echo "Bye";
+                }
+            }
+
+            function callFunction(ClassEighteen $obj) // input type must be of class ClassEighteen or it will  throught an error
+            {
+                $obj->hello();
+            }
+
+
+            $objClassEighteen = new ClassEighteen();
+
+            $objClassNineteen = new ClassNineteen();
+
+            callFunction($objClassEighteen); // runs successfully
+            //callFunction($objClassNineteen); // return error becuase data type is not ClassEighteen
+
+
+
+            /**
+             * Type Hinting example 
+             */
+
+
+            class School
+            {
+                public function getName(Student $names)
+                {
+                    foreach ($names->list() as $name) {
+                        echo "Name : " . $name . "<br>";
+                    }
+                }
+            }
+            class Student
+            {
+                public function list()
+                {
+                    return ["Tarun", "Hope", "Yagya", "Priya", "Anirudh"];
+                }
+            }
+
+            $objStudent = new Student();
+
+            $objSchool = new School();
+
+            $objSchool->getName($objStudent);
+
+
+            /**
+             * Namespace : Solves the problme to use same classes with same name
+             * It also helps in organizing or grouping the classes togather which performs the similar type of tasks.
+             * 
+             */
+
+
+            echo Hash::make("Tarun Chauhan");
+            echo "<br>";
+            echo HashPassword::make(Hash::make("Tarun Chauhan"));
             ?>
+
+
         </div>
 
 
@@ -294,13 +581,14 @@
     <!-- Custom Script -->
     <script>
         // Initializing jQuery
-        // it will start working before loading of page / use it in footer only
+        // Function will start working before loading of page / use it in footer only
         $(function() {
             // 
         });
 
 
         // check if entire document is readythe start working / can be used in head because it will wait for page toload completly
+        // (SELECTOR)  (METHOD)
         $(document).ready(function() {
             console.log("ITS WORKING");
             var a = $(".card-body").html();
