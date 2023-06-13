@@ -1,9 +1,12 @@
 <?php
-require_once('Helper\Encrypt.php');
-require_once('Helper\EncryptPassword.php');
+require_once 'Helper/Encrypt.php';
+require_once 'Helper/EncryptPassword.php';
+require_once 'Model/User.php';
 
 use Helper\Hash as Hash;
+use Model\User as User;
 use Helper\Password\Hash as HashPassword;
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -556,6 +559,67 @@ use Helper\Password\Hash as HashPassword;
             echo Hash::make("Tarun Chauhan");
             echo "<br>";
             echo HashPassword::make(Hash::make("Tarun Chauhan"));
+
+
+            /**
+             * Mehod Chaining : 
+             */
+            echo "<br>";
+            echo User::all(); // select * from 'users'
+            echo "<br>";
+            echo User::where('location', 'shimla');; // Select * from 'users' where 'location' = 'Shimla';
+            echo "<br>";
+            echo User::findOrFail(23); // Select * from 'users' where 'id' = 23;
+            echo "<br>";
+
+            $objUser = new User();
+            $objUser->one()->two()->three();
+
+            /**
+             * PHP Magic Methods : Magic methods in PHP are special methods that are aimed to perform certain tasks. These methods are named with double underscore (__) as prefix.
+             * 
+             * List of magic methods :  
+             * 1. __construct() : called at the begining of the class
+             * 2. __destruct() : called when entrie execution is end
+             * 3. __call() : this method is called when we try to invoke private ,  protected or non-available method
+             * 4. __callStatic() : (use with static keyword )this method is called when we try to invoke static private ,  protected or non-available method
+             * 5. __get() : this method is called when we try to read data from protected or private properties
+             * 6. __set() : this method is called when we try to write data to a protected or private property  
+             * 7. __isset() : this method is used to check if value for a varibale is set or not.
+             * 8. __unset()
+             * 9. __sleep()
+             * 10. __wakeup()
+             * 11. __serialize()
+             * 12. __unserialize()
+             * 13. __toString()
+             * 14. __invoke()
+             * 15. __set_state()
+             * 16. __clone()
+             * 17. __debuginfo()
+             * 
+             * 
+             * All magic functions except __construct(),__desruct() and __clone() must be declared as public.
+             * 
+             */
+
+
+
+            /**
+             * Conditional Functions : (true / false) ->
+             * Types of : 
+             * 1. class_exists()
+             * 2. interface_exists()
+             * 3. method_exists()
+             * 4. trait_exists()
+             * 5. property_exists()
+             * 6. is_a()
+             * 7. is_subclass_of() 
+             */
+
+
+
+
+
             ?>
 
 
