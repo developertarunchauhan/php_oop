@@ -1,5 +1,7 @@
 <?php
 
+use JetBrains\PhpStorm\Internal\ReturnTypeContract;
+
 class Connection
 {
     /**
@@ -14,6 +16,7 @@ class Connection
     private $mysqli = '';
     private $result = [];
     private $conn = false;
+
     public function __construct()
     {
         /**
@@ -45,9 +48,9 @@ class Connection
             $columns = implode(', ', array_keys($data));
             $values = implode("','", $data);
 
-            $insertSql = "INSERT INTO $table ($columns) VALUES ('$values')";
+            $insert = "INSERT INTO $table ($columns) VALUES ('$values')";
 
-            if ($this->mysqli->query($insertSql)) {
+            if ($this->mysqli->query($insert)) {
                 array_push($this->result, $this->mysqli->insert_id);
                 return true;
             } else {
@@ -66,20 +69,66 @@ class Connection
     public function view()
     {
     }
+    public function viewAll()
+    {
+        $viewAll = "select * from users";
+        $select = $this->mysqli->query($viewAll);
+        if ($select) {
+            return $select->fetch_all(MYSQLI_ASSOC);
+        } else {
+            array_push($this->result, $this->mysqli->error);
+            return false;
+        }
+    }
 
     /**
      * Update a resource
      */
-    public function update()
+    public function update($table, $data = [], $id = null)
     {
+        if ($this->tableExists($table)) {
+            //print_r($data);
+            $set = [];
+
+            foreach ($data as $key => $value) {
+                $set[] = "$key = '$value'";
+            }
+
+            //print_r($set);
+            $update = "update users set " . implode(",", $set) . "where id = $id";
+            if ($this->mysqli->query($update)) {
+                array_push($this->result, $this->mysqli->affected_rows);
+                return true;
+            } else {
+                array_push($this->result, $this->mysqli->error);
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
 
     /**
      * Delete a resource
      */
 
-    public function delete()
+    public function delete($table, $id)
     {
+        if ($this->tableExists($table)) {
+            $delete = "delete from $table";
+            if ($id != null) {
+                $delete .= " where  id = $id";
+            }
+            if ($this->mysqli->query($delete)) {
+                array_push($this->result, $this->mysqli->affected_rows);
+                return true;
+            } else {
+                array_push($this->result, $this->mysqli->error);
+                return false;
+            }
+        } else {
+            return false;
+        }
     }
     /**
      * Destroying connection after performing task

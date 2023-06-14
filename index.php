@@ -41,7 +41,23 @@ use Helper\Password\Hash as HashPassword;
                 'password' => 'vikas@123',
                 'role' => 'admin'
             ]);
+
+
+            $db->update('users', [
+                'name' => 'Nikhil Kumar',
+                'email' => 'nikhil@gmail.com',
+                'password' => 'nikhil@123',
+                'role' => 'student'
+            ], rand(10, 100));
+
+
+            $db->delete('users', rand(10, 100));
+
+            print_r($db->viewAll());
+            echo "<pre>";
             print_r($db->getResult());
+            echo "</pre>";
+
             ?>
         </div>
         <div class="container border rounded border my-5 p-3">
