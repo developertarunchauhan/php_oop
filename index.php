@@ -1,7 +1,10 @@
 <?php
+require_once 'Database/Connection.php';
 require_once 'Helper/Encrypt.php';
 require_once 'Helper/EncryptPassword.php';
 require_once 'Model/User.php';
+
+
 
 use Helper\Hash as Hash;
 use Model\User as User;
@@ -19,19 +22,28 @@ use Helper\Password\Hash as HashPassword;
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 
-    <!-- jQuery -->
-    <!--<script src="script/jQuery.js"></script>-->
-
-
     <title>PHP OOP CONCEPTS</title>
 </head>
 
 <body>
     <!-- Main Navigation Begin -->
-    <?php include_once('partials/navbar.php'); ?>
+    <?php include_once 'partials/navbar.php'; ?>
     <!-- Main Navigation Ends -->
     <!-- Main Container Begin-->
     <div class="container-fluid">
+        <div class="container border rounded p-3 my-3">
+            <?php
+            $db = new Connection();
+
+            $db->create('users', [
+                'name' => 'Vikas Kumar',
+                'email' => 'vikas@gmail.com',
+                'password' => 'vikas@123',
+                'role' => 'admin'
+            ]);
+            print_r($db->getResult());
+            ?>
+        </div>
         <div class="container border rounded border my-5 p-3">
             <?php
             /**
@@ -247,7 +259,8 @@ use Helper\Password\Hash as HashPassword;
             $objClassFour->showMsg();
 
             /**
-             * ABSTRACT CLASS : A class whose object can't be created.Properties & methods of a Abstract class can only be accessed inside a derived class.
+             * ABSTRACT CLASS : A class whose object can't be created.
+             * Properties & methods of a Abstract class can only be accessed inside a derived class.
              * 1. Atleast one abstract method is required.
              * 2. 
              */
@@ -318,6 +331,7 @@ use Helper\Password\Hash as HashPassword;
                     echo "Hello," . $msg . "<br>";
                 }
             }
+
             /**
              * Static Members : called directly without creating object of class
              * instead of '$this->' use 'self::' for calling static function or static property within same class
@@ -371,7 +385,7 @@ use Helper\Password\Hash as HashPassword;
             $objClassThirteen->show();
 
             /**
-             * Traits : traits are used to declare methods which can be used accross multiple classes. It solves the probelem of limitation of single inheritance in php
+             * Traits : traits are used to declare methods which can be used accross multiple classes. It solves the probelem of limitation of single class inheritance in php
              */
 
             trait TraitOne
@@ -416,7 +430,7 @@ use Helper\Password\Hash as HashPassword;
             {
                 use TraitOne, TraitTwo {
                     TraitOne::successMsg insteadof TraitTwo; // resolving same function name for the trait
-                    TraitTwo::uploadXls as public newUploadXls; // usiing a private trait function as public and giving new name(Optional)
+                    TraitTwo::uploadXls as public newUploadXls; // using a private trait function as public and giving new name(Optional)
                 }
                 public function file()
                 {
@@ -613,13 +627,23 @@ use Helper\Password\Hash as HashPassword;
              * 4. trait_exists()
              * 5. property_exists()
              * 6. is_a()
-             * 7. is_subclass_of() 
+             * 7. is_subclass_of()
+             *  
              */
 
 
-
-
-
+            /**
+             * Get function :
+             * 
+             */
+            /**
+             * PHP & MySQL Programming Methods
+             * 
+             * 1. MySQLi Procedural : For simple websites
+             * 2. MySQLi Object-oriented : for OOp websites
+             * 3. PDO
+             * 
+             */
             ?>
 
 
