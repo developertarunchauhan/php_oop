@@ -76,7 +76,7 @@
             </div>
         </div>
 
-        <div class="card form-box">
+        <div class="card form-box mb-3">
             <div class="card-header">
                 jQuery Form Events
             </div>
@@ -109,6 +109,22 @@
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
+            </div>
+        </div>
+        <div class="card append-prepend">
+            <div class="card-header">
+                jQuery Append
+            </div>
+            <div class="card-body">
+                <ol>
+                    <li>List 1</li>
+                    <li>List 2</li>
+                    <li>List 3</li>
+                </ol>
+                <div class="btn-group">
+                    <button class="btn btn-primary btn-prepend">Prepend</button><button class="btn btn-secondary btn-append">Append</button>
+                </div>
+
             </div>
         </div>
 
@@ -355,8 +371,49 @@
              * Prepend() : adding a new html element to the top of a given selector
              */
 
+            $('.btn-prepend').click(function() {
+                $('.append-prepend ol').prepend("<li>New Task</li>");
+            });
+            $('.btn-append').click(function() {
+                $('.append-prepend ol').append("<li>New Task</li>");
+            });
+
+            /**
+             * 
+             * after() : add a new html element after the given selector
+             * before() : add a new html element before the given selector
+             * 
+             */
 
 
+            /**
+             * remove() : remove the target element from the page.
+             * empty() : remove the entire content within the target element.
+             * 
+             */
+
+
+            /**
+             * appendTo() : same as append but different syntex
+             * Syntex : $('CONTENT').appendTo('SELECTOR')
+             * 
+             * prependTo() : same as prepend but different syntex
+             * Syntex : $('CONTENT').prependTo('SELECTOR')
+             * 
+             */
+
+
+            /**
+             * 
+             * clone() : clone a html element and paste it to the target element.
+             * use it with appendTo() or prependTo()
+             * Syntex : $('ELEMENT TO COPY').clone().appendTo('TARGET ELEMENT');
+             */
+
+            /**
+             * replaceWith(): replacing a target element tags with given tags or text
+             * replaceAll() : replace a target element tags with given tags
+             */
         });
     </script>
 </body>
