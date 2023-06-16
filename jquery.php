@@ -414,6 +414,12 @@
              * replaceWith(): replacing a target element tags with given tags or text
              * replaceAll() : replace a target element tags with given tags
              */
+
+
+            /**
+             * wrap() : wrapping a target/ selected tag with a new tag
+             * unwrap : unwrapping a target content from applied wrap
+             */
         });
     </script>
 </body>
